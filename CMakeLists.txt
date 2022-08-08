@@ -2,13 +2,18 @@ cmake_minimum_required(VERSION 3.10)
 
 enable_language(ASM)
 
-project(hello)
+project(benchmark)
 
 set(TARGET_LDSCRIPT "${CMAKE_SOURCE_DIR}/stx7105.ld")
 
 set(TARGET_SOURCES
+    "lib/coremark/core_list_join.c"
+    "lib/coremark/core_main.c"
+    "lib/coremark/core_matrix.c"
+    "lib/coremark/core_state.c"
+    "lib/coremark/core_util.c"
     "lib/printf/printf.c"
-    "src/main.c"
+    "src/core_portme.c"
     "src/stx7105_exc.c"
     "src/stx7105_utils.c"
     "startup_stx7105.S"
@@ -16,13 +21,19 @@ set(TARGET_SOURCES
 
 set(TARGET_INCLUDES
     "include"
+    "lib/coremark"
     "lib/printf"
+)
+
+set(TARGET_DEFS
+    "ITERATIONS=1"
+    "PERFORMANCE_RUN=1"
 )
 
 set(TARGET_FLAGS_HARDWARE "-m4-300 -ml")
 
-set(CMAKE_C_FLAGS_DEBUG          "-DDEBUG -g -O0")
-set(CMAKE_CXX_FLAGS_DEBUG        "-DDEBUG -g -O0")
+set(CMAKE_C_FLAGS_DEBUG          "-DDEBUG -g -O2")
+set(CMAKE_CXX_FLAGS_DEBUG        "-DDEBUG -g -O2")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "")
 
 set(CMAKE_C_FLAGS_RELEASE          "-DNDEBUG -O2 -flto")
