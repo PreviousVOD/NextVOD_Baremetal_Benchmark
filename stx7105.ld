@@ -7,8 +7,8 @@ ENTRY(_start)
 /* We don't use 29-bit mode since PMB and LMI initialization has to be done anyway. */
 
 MEMORY {
-    EMI  (rx) : ORIGIN = 0x80000000, LENGTH = 0x01000000 /* LMI virtual address: 0x8000_0000 */
-    LMI (rwx) : ORIGIN = 0x81000000, LENGTH = 0x0F000000 /* LMI virtual address: 0x8100_0000 */
+    EMI  (rx) : ORIGIN = 0x90000000, LENGTH = 0x01000000 /* LMI virtual address: 0x8000_0000 */
+    LMI (rwx) : ORIGIN = 0x91000000, LENGTH = 0x0F000000 /* LMI virtual address: 0x8100_0000 */
 }
 
 SECTIONS {

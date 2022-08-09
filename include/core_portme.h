@@ -78,7 +78,7 @@ typedef uint32_t CORE_TICKS;
 #endif
 #endif
 #ifndef COMPILER_FLAGS
-#define COMPILER_FLAGS "-O2"
+#define COMPILER_FLAGS "-O0"
 #endif
 #ifndef MEM_LOCATION
 #define MEM_LOCATION "DDR2 LMI"
@@ -98,7 +98,7 @@ typedef int32_t  ee_s32;
 typedef float    ee_f32;
 typedef uint8_t  ee_u8;
 typedef uint32_t ee_u32;
-typedef ee_u32   ee_ptr_int;
+typedef ee_s32   ee_ptr_int;
 typedef size_t   ee_size_t;
 /* align_mem :
         This macro is used to align an offset to point to a 32b value. It is
@@ -167,7 +167,7 @@ typedef size_t   ee_size_t;
    greater then 1.
 */
 #ifndef MAIN_HAS_NOARGC
-#define MAIN_HAS_NOARGC 0
+#define MAIN_HAS_NOARGC 1
 #endif
 
 /* Configuration : MAIN_HAS_NORETURN

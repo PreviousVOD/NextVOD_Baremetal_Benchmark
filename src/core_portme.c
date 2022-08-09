@@ -51,7 +51,7 @@ volatile ee_s32 seed5_volatile = 0;
    time.h and windows.h definitions included.
 */
 
-#define EE_TICKS_PER_SEC 97656
+#define EE_TICKS_PER_SEC (100000000.0 / 1024.0)
 
 /** Define Host specific (POSIX), or target specific global time variables. */
 static uint32_t start_time_val, stop_time_val;
@@ -86,8 +86,6 @@ void start_time(void) {
 void stop_time(void) {
     TMU->TSTR &= ~TMU_TSTR_STR0_Msk; /* Stop counter */
     stop_time_val = TMU->TCNT0;
-
-    printf("Stop time: 0x%09lx\r\n", stop_time_val);
 }
 /* Function : get_time
         Return an abstract "ticks" number that signifies time on the system.
@@ -99,9 +97,7 @@ void stop_time(void) {
    controlled by <TIMER_RES_DIVIDER>
 */
 CORE_TICKS get_time(void) {
-    CORE_TICKS elapsed = (CORE_TICKS)(start_time_val - stop_time_val);
-    printf("Get time: 0x%08lx\r\n", elapsed);
-    return elapsed;
+    return start_time_val - stop_time_val;
 }
 /* Function : time_in_secs
         Convert the value returned by get_time to seconds.
@@ -142,8 +138,6 @@ void portable_init(core_portable *p, int *argc, char *argv[]) {
 
     uart_init();
 
-    ee_printf("Portable initialized\r\n");
-
     if (sizeof(ee_ptr_int) != sizeof(ee_u8 *)) {
         ee_printf(
             "ERROR! Please define ee_ptr_int to a type that holds a "
@@ -162,7 +156,14 @@ void portable_fini(core_portable *p) {
 }
 
 void _putchar(char ch) {
-    while (CONSOLE_ASC->STA & 1 << 9U) {
+    if (ch == '\n') {
+        while (CONSOLE_ASC->STA & (1 << 9U)) {
+            /**/
+        }
+
+        CONSOLE_ASC->TX_BUF = '\r';
+    }
+    while (CONSOLE_ASC->STA & (1 << 9U)) {
         // wait for TX FIFO slot.
     }
     CONSOLE_ASC->TX_BUF = ch;

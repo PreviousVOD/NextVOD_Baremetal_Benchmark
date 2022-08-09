@@ -63,10 +63,11 @@ _main_entry:
     jsr @r0
     or r0, r0
 
-    mov r0, r4
-    mov.l _exit_k, r0
-    jsr @r0
-    or r0, r0
+    mov.l _exit_loop_k, r0
+_exit_loop:
+    sleep
+    jmp @r0
+    nop
 
     .balign 4
 /* libc FPU routine */
@@ -88,8 +89,8 @@ _end_k:
 /* Function pointers */
 _main_k:
     .long _main /* Same address as main */
-_exit_k:
-    .long _exit
+_exit_loop_k:
+    .long _exit_loop
 _exc_base_k:
     .long _exc_base
 _exc_imask_k:
