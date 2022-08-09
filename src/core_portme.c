@@ -51,7 +51,7 @@ volatile ee_s32 seed5_volatile = 0;
    time.h and windows.h definitions included.
 */
 
-#define EE_TICKS_PER_SEC 100000
+#define EE_TICKS_PER_SEC 97656
 
 /** Define Host specific (POSIX), or target specific global time variables. */
 static uint32_t start_time_val, stop_time_val;
@@ -69,11 +69,11 @@ void start_time(void) {
 
     start_time_val = reload_value;
 
-    TMU->TSTR &= ~TMU_TSTR_STR0_Msk;       /* Stop counter */
-    TMU->TCR0  = 0x04U; /* 1024 prescale */
-    TMU->TCNT0 = reload_value;             /* 100kHz */
-    TMU->TCOR0 = reload_value;             /* Reload register */
-    TMU->TSTR |= TMU_TSTR_STR0_Msk;        /* Start counter */
+    TMU->TSTR &= ~TMU_TSTR_STR0_Msk; /* Stop counter */
+    TMU->TCR0  = 0x04U;              /* 1024 prescale */
+    TMU->TCNT0 = reload_value;       /* 100kHz */
+    TMU->TCOR0 = reload_value;       /* Reload register */
+    TMU->TSTR |= TMU_TSTR_STR0_Msk;  /* Start counter */
 }
 /* Function : stop_time
         This function will be called right after ending the timed portion of the
@@ -86,6 +86,8 @@ void start_time(void) {
 void stop_time(void) {
     TMU->TSTR &= ~TMU_TSTR_STR0_Msk; /* Stop counter */
     stop_time_val = TMU->TCNT0;
+
+    printf("Stop time: 0x%09lx\r\n", stop_time_val);
 }
 /* Function : get_time
         Return an abstract "ticks" number that signifies time on the system.
@@ -97,7 +99,8 @@ void stop_time(void) {
    controlled by <TIMER_RES_DIVIDER>
 */
 CORE_TICKS get_time(void) {
-    CORE_TICKS elapsed = (CORE_TICKS)(stop_time_val - start_time_val);
+    CORE_TICKS elapsed = (CORE_TICKS)(start_time_val - stop_time_val);
+    printf("Get time: 0x%08lx\r\n", elapsed);
     return elapsed;
 }
 /* Function : time_in_secs
@@ -139,13 +142,15 @@ void portable_init(core_portable *p, int *argc, char *argv[]) {
 
     uart_init();
 
+    ee_printf("Portable initialized\r\n");
+
     if (sizeof(ee_ptr_int) != sizeof(ee_u8 *)) {
         ee_printf(
             "ERROR! Please define ee_ptr_int to a type that holds a "
-            "pointer!\n");
+            "pointer!\r\n");
     }
     if (sizeof(ee_u32) != 4) {
-        ee_printf("ERROR! Please define ee_u32 to a 32b unsigned type!\n");
+        ee_printf("ERROR! Please define ee_u32 to a 32b unsigned type!\r\n");
     }
     p->portable_id = 1;
 }

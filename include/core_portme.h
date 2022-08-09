@@ -78,8 +78,7 @@ typedef uint32_t CORE_TICKS;
 #endif
 #endif
 #ifndef COMPILER_FLAGS
-#define COMPILER_FLAGS \
-    "-O2"
+#define COMPILER_FLAGS "-O2"
 #endif
 #ifndef MEM_LOCATION
 #define MEM_LOCATION "DDR2 LMI"
@@ -93,14 +92,14 @@ typedef uint32_t CORE_TICKS;
         ee_ptr_int needs to be the data type used to hold pointers, otherwise
    coremark may fail!!!
 */
-typedef signed short   ee_s16;
-typedef unsigned short ee_u16;
-typedef signed int     ee_s32;
-typedef double         ee_f32;
-typedef unsigned char  ee_u8;
-typedef unsigned int   ee_u32;
-typedef ee_u32         ee_ptr_int;
-typedef size_t         ee_size_t;
+typedef int16_t  ee_s16;
+typedef uint16_t ee_u16;
+typedef int32_t  ee_s32;
+typedef float    ee_f32;
+typedef uint8_t  ee_u8;
+typedef uint32_t ee_u32;
+typedef ee_u32   ee_ptr_int;
+typedef size_t   ee_size_t;
 /* align_mem :
         This macro is used to align an offset to point to a 32b value. It is
    used in the Matrix algorithm to initialize the input memory blocks.
@@ -187,8 +186,7 @@ typedef size_t         ee_size_t;
 */
 extern ee_u32 default_num_contexts;
 
-typedef struct CORE_PORTABLE_S
-{
+typedef struct CORE_PORTABLE_S {
     ee_u8 portable_id;
 } core_portable;
 
@@ -196,8 +194,7 @@ typedef struct CORE_PORTABLE_S
 void portable_init(core_portable *p, int *argc, char *argv[]);
 void portable_fini(core_portable *p);
 
-#if !defined(PROFILE_RUN) && !defined(PERFORMANCE_RUN) \
-    && !defined(VALIDATION_RUN)
+#if !defined(PROFILE_RUN) && !defined(PERFORMANCE_RUN) && !defined(VALIDATION_RUN)
 #if (TOTAL_DATA_SIZE == 1200)
 #define PROFILE_RUN 1
 #elif (TOTAL_DATA_SIZE == 2000)
