@@ -32,10 +32,8 @@ set(TARGET_DEFS
 
 set(TARGET_FLAGS_HARDWARE "-m4-300 -ml")
 
-set(TARGET_MANUAL_OPTS "-fauto-inc-dec -fbranch-count-reg -fcombine-stack-adjustments -fcompare-elim -fcprop-registers -fdce -fdefer-pop -fdelayed-branch -fdse -fforward-propagate")
-
-set(CMAKE_C_FLAGS_DEBUG          "-DDEBUG -g -O0 ${TARGET_MANUAL_OPTS}")
-set(CMAKE_CXX_FLAGS_DEBUG        "-DDEBUG -g -O0 ${TARGET_MANUAL_OPTS}")
+set(CMAKE_C_FLAGS_DEBUG          "-DDEBUG -g -O1")
+set(CMAKE_CXX_FLAGS_DEBUG        "-DDEBUG -g -O1")
 set(CMAKE_EXE_LINKER_FLAGS_DEBUG "")
 
 set(CMAKE_C_FLAGS_RELEASE          "-DNDEBUG -O2 -flto")
