@@ -16,7 +16,7 @@ limitations under the License.
 Original Author: Shay Gal-on
 */
 
-#include "printf.h"
+#include <stdio.h>
 
 /* Topic : Description
         This file contains configuration constants required to execute on
@@ -51,7 +51,7 @@ Original Author: Shay Gal-on
         Define to 1 if the platform has stdio.h.
 */
 #ifndef HAS_STDIO
-#define HAS_STDIO 0
+#define HAS_STDIO 1
 #endif
 /* Configuration : HAS_PRINTF
         Define to 1 if the platform has stdio.h and implements the printf
@@ -78,7 +78,7 @@ typedef uint32_t CORE_TICKS;
 #endif
 #endif
 #ifndef COMPILER_FLAGS
-#define COMPILER_FLAGS "-O0"
+#define COMPILER_FLAGS "-O3 -fomit-frame-pointer -funroll-all-loops -finline-limit=1000 -ftree-dominator-opts -fno-if-conversion2 -fselective-scheduling -fno-code-hoisting -freorder-blocks-and-partition"
 #endif
 #ifndef MEM_LOCATION
 #define MEM_LOCATION "DDR2 LMI"

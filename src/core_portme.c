@@ -20,7 +20,6 @@ Original Author: Shay Gal-on
 #include <stdlib.h>
 
 #include "coremark.h"
-#include "printf.h"
 #include "stx7105.h"
 
 #define SYSTEM_CONFIG34 (0xFE001188U) /* PIO4 */
@@ -153,18 +152,4 @@ void portable_init(core_portable *p, int *argc, char *argv[]) {
 */
 void portable_fini(core_portable *p) {
     p->portable_id = 0;
-}
-
-void _putchar(char ch) {
-    if (ch == '\n') {
-        while (CONSOLE_ASC->STA & (1 << 9U)) {
-            /**/
-        }
-
-        CONSOLE_ASC->TX_BUF = '\r';
-    }
-    while (CONSOLE_ASC->STA & (1 << 9U)) {
-        // wait for TX FIFO slot.
-    }
-    CONSOLE_ASC->TX_BUF = ch;
 }
